@@ -40,17 +40,19 @@ func todayIsHoliday() map[string]interface{} {
 
 		// 如果节假日不存在，则返回非节假日
 		return map[string]interface{}{
-			"name":     name,
-			"date":     now,
-			"isOffDay": isOffDay,
+			"name":      name,
+			"date":      now,
+			"isOffDay":  isOffDay,
+			"isHoliday": isOffDay,
 		}
 	}
 
 	// 返回节假日数据
 	return map[string]interface{}{
-		"name":     name,
-		"date":     date,
-		"isOffDay": isOffDay,
+		"name":      name,
+		"date":      date,
+		"isOffDay":  isOffDay,
+		"isHoliday": true,
 	}
 }
 
