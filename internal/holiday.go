@@ -34,7 +34,7 @@ func todayIsHoliday() map[string]interface{} {
 		// 判断是否为周末
 		weekDay := time.Now().Weekday()
 		if weekDay == time.Saturday || weekDay == time.Sunday {
-			name = "周末"
+			name = "休息日"
 			isOffDay = true
 		}
 
