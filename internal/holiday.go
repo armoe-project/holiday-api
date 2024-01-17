@@ -132,12 +132,14 @@ func syncHoliday(year string) {
 	if days == nil {
 		// 如果解析失败，则不继续执行
 		insertLog("JSON 解析失败, Days is nil")
+		fmt.Println("JSON 解析失败, Days is nil")
 		return
 	}
 
 	// 如果节假日数据为空，则不继续执行
 	if len(days) == 0 {
 		insertLog("节假日数据为空, 跳过同步")
+		fmt.Println("节假日数据为空, 跳过同步")
 		return
 	}
 
