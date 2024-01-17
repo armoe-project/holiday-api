@@ -9,18 +9,22 @@ import (
 
 func InitHttpServer() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// 获取请求参数
+		date := r.URL.Query().Get("date")
+
 		// 结果 JSON
 		result := make(map[string]interface{})
 		result["code"] = 0
 		result["message"] = "success"
-		result["data"] = todayIsHoliday()
+		result["data"] = todayIsHoliday(date)
 
 		// 返回结果
 		resultJson, err := json.Marshal(result)
 		if err != nil {
 			insertLog("JSON 转换失败, Error: " + err.Error())
 			fmt.Println("JSON 转换失败, Error: " + err.Error())
-			return
+			// 如果转换失败，自行拼接 JSON
+			resultJson = []byte(`{"code": 1, "message": "JSON 转换失败", "data": null}`)
 		}
 		_, err = w.Write(resultJson)
 		if err != nil {

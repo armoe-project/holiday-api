@@ -9,13 +9,14 @@ import (
 	"time"
 )
 
-func todayIsHoliday() map[string]interface{} {
-	// 获取当前日期
-	now := time.Now().Format("2006-01-02")
-
+func todayIsHoliday(queryDate string) map[string]interface{} {
+	// 如果查询日期为空，则使用当前日期
+	if queryDate == "" {
+		queryDate = time.Now().Format("2006-01-02")
+	}
 	// 查询节假日是否存在
 	query := "SELECT id, name, date, is_off_day FROM holiday WHERE date = ?"
-	row := Db.QueryRow(query, now)
+	row := Db.QueryRow(query, queryDate)
 	var id int
 	var name string
 	var date string
@@ -41,7 +42,7 @@ func todayIsHoliday() map[string]interface{} {
 		// 如果节假日不存在，则返回非节假日
 		return map[string]interface{}{
 			"name":      name,
-			"date":      now,
+			"date":      queryDate,
 			"isOffDay":  isOffDay,
 			"isHoliday": isOffDay,
 		}
