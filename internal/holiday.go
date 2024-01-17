@@ -14,7 +14,7 @@ func todayIsHoliday() map[string]interface{} {
 	now := time.Now().Format("2006-01-02")
 
 	// 查询节假日是否存在
-	query := "SELECT id FROM holiday WHERE date = ?"
+	query := "SELECT id, name, date, is_off_day FROM holiday WHERE date = ?"
 	row := Db.QueryRow(query, now)
 	var id int
 	var name string
