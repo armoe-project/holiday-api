@@ -32,8 +32,10 @@ func todayIsHoliday(queryDate string) map[string]interface{} {
 		name := "工作日"
 		// 是否为周末
 		isOffDay := false
+		// 转换日期格式
+		t, _ := time.Parse("2006-01-02", queryDate)
 		// 判断是否为周末
-		weekDay := time.Now().Weekday()
+		weekDay := t.Weekday()
 		if weekDay == time.Saturday || weekDay == time.Sunday {
 			name = "休息日"
 			isOffDay = true
@@ -44,7 +46,7 @@ func todayIsHoliday(queryDate string) map[string]interface{} {
 			"name":      name,
 			"date":      queryDate,
 			"isOffDay":  isOffDay,
-			"isHoliday": isOffDay,
+			"isHoliday": false,
 		}
 	}
 
