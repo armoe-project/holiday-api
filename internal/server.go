@@ -10,6 +10,20 @@ import (
 
 func InitHttpServer() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// 输出日志
+		method := r.Method         // 请求方法
+		uri := r.RequestURI        // 请求 URI
+		remoteAddr := r.RemoteAddr // 请求 IP
+		// 如果请求头中有 X-Forwarded-For 或 X-Real-IP，则使用请求头中的 IP
+		if ip := r.Header.Get("X-Forwarded-For"); ip != "" {
+			remoteAddr = ip
+		} else if ip := r.Header.Get("X-Real-IP"); ip != "" {
+			remoteAddr = ip
+		}
+		userAgent := r.UserAgent()                    // 请求 UA
+		t := time.Now().Format("2006-01-02 15:04:05") // 当前时间
+
+		fmt.Println("[" + t + "] " + remoteAddr + " " + method + " " + uri + " " + userAgent)
 
 		// 结果 JSON
 		result := make(map[string]interface{})
