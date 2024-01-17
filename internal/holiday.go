@@ -22,14 +22,28 @@ func todayIsHoliday() map[string]interface{} {
 	var isOffDay bool
 	err := row.Scan(&id, &name, &date, &isOffDay)
 	if err != nil {
-		// 如果查询失败，则不继续执行
-		fmt.Println("查询节假日失败, Error: " + err.Error())
-		return nil
+		// 如果查询失败，则非节假日
+		id = 0
 	}
 
 	if id == 0 {
-		// 如果节假日不存在，则不继续执行
-		return nil
+		// 名称
+		name := "工作日"
+		// 是否为周末
+		isOffDay := false
+		// 判断是否为周末
+		weekDay := time.Now().Weekday()
+		if weekDay == time.Saturday || weekDay == time.Sunday {
+			name = "周末"
+			isOffDay = true
+		}
+
+		// 如果节假日不存在，则返回非节假日
+		return map[string]interface{}{
+			"name":     name,
+			"date":     now,
+			"isOffDay": isOffDay,
+		}
 	}
 
 	// 返回节假日数据

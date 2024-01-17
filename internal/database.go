@@ -54,9 +54,8 @@ func insertOrUpdateHoliday(name string, date string, isOffDay bool) {
 	var id int
 	err := row.Scan(&id)
 	if err != nil {
-		// 如果查询失败，则不继续执行
-		fmt.Println("查询节假日失败, Error: " + err.Error())
-		return
+		// 如果查询失败，则为不存在
+		id = 0
 	}
 
 	if id == 0 {
