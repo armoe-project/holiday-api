@@ -60,23 +60,27 @@ func todayIsHoliday(queryDate string) map[string]interface{} {
 }
 
 func syncHolidayJob() {
-	fmt.Println("开始同步节假日数据")
-
+	// 记录开始时间
+	t := time.Now()
 	// 获取当前年份
-	year := time.Now().Year()
+	year := t.Year()
 	// 今年
 	nowYear := strconv.Itoa(year)
 	// 明年
 	nextYear := strconv.Itoa(year + 1)
 
+	fmt.Println("========== " + t.Format("2006-01-02 15:04:05") + " ==========")
+
 	// 同步节假日数据
 	syncHoliday(nowYear)  // 今年
 	syncHoliday(nextYear) // 明年
 
-	fmt.Println("同步节假日数据完成")
+	fmt.Println("==================== 耗时 " + strconv.Itoa(int(time.Since(t).Seconds())) + " 秒 ====================")
 }
 
 func syncHoliday(year string) {
+	fmt.Println("同步" + year + "年节假日数据")
+
 	// 请求地址前缀
 	prefixList := []string{
 		"https://fastly.jsdelivr.net/gh/NateScarlet/holiday-cn@master/",
@@ -151,4 +155,6 @@ func syncHoliday(year string) {
 		fmt.Println("同步节假日成功, Name: " + name + ", Date: " + date + ", IsOffDay: " + strconv.FormatBool(isOffDay))
 		insertLog("同步节假日成功, Name: " + name + ", Date: " + date + ", IsOffDay: " + strconv.FormatBool(isOffDay))
 	}
+
+	fmt.Println("同步" + year + "年节假日数据完成")
 }
