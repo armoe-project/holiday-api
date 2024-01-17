@@ -5,18 +5,36 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 )
 
 func InitHttpServer() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// 获取请求参数
-		date := r.URL.Query().Get("date")
 
 		// 结果 JSON
 		result := make(map[string]interface{})
 		result["code"] = 0
 		result["message"] = "success"
-		result["data"] = todayIsHoliday(date)
+		result["data"] = nil
+
+		// 获取请求参数
+		date := r.URL.Query().Get("date")
+
+		// 如果参数不为空，则校验是否为日期格式
+		if date != "" {
+			_, err := time.Parse("2006-01-02", date)
+			if err != nil {
+				// 如果不是日期格式，则返回错误
+				result["code"] = 1
+				result["message"] = "参数错误"
+			} else {
+				// 查询节假日
+				result["data"] = todayIsHoliday(date)
+			}
+		} else {
+			// 查询节假日
+			result["data"] = todayIsHoliday(date)
+		}
 
 		// 返回结果
 		resultJson, err := json.Marshal(result)
